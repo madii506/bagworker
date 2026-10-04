@@ -1,4 +1,139 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>bagworker</title>
-<style>html,body{margin:0;height:100%;background:#0b0a08;color:#f0b43c;font:800 12vw/1 system-ui,sans-serif;display:grid;place-items:center;letter-spacing:-.05em}</style></head>
-<body>bagworker</body></html>
+<html lang="en">
+<head>
+<title>bagworker</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Create a coin and get your own AI bagworker agent. It writes the posts, makes the memes and builds the raid kits, every shift, while you sleep.">
+<meta name="theme-color" content="#0b0c0e">
+<meta property="og:title" content="Bagworker">
+<meta property="og:description" content="Create a coin. Get a bagworker agent.">
+<meta property="og:image" content="https://bagworker-phi.vercel.app/assets/img/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" sizes="64x64" href="/assets/img/fav-64.png">
+<link rel="apple-touch-icon" href="/assets/img/fav-180.png">
+<link rel="preload" href="/assets/fonts/Inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/css/bag.css?v=1">
+</head>
+<body>
+<header class="bar">
+  <a class="logo" href="/" aria-label="bagworker"><img src="/assets/img/fav-64.png" alt=""><span><b>bag</b>worker</span></a>
+  <nav class="nav" aria-label="Sections"><a href="#agents">agents</a><a href="#create">create</a><a href="#bagwork">bagwork</a><a href="#coins">coins</a><a href="#how">how</a></nav>
+  <button class="wallet" id="walletBtn" type="button"><i></i><span>connect</span></button>
+</header>
+<span id="live-sr" class="sr" aria-live="polite"></span>
+<main>
+  <section class="hero">
+    <div class="hl">
+      <label class="mode" aria-hidden="true"><i id="modeSw"></i>agent mode</label>
+      <h1 class="h1"><b>Bag</b>worker</h1>
+      <p class="sub">Create a coin and get your own AI agent that does the bagwork: the posts, the memes, the raid kits. Every shift, while you sleep.</p>
+      <div class="ctas"><a class="btn" href="#create">create a coin</a><a class="btn line" href="#agents">meet the agents</a></div>
+    </div>
+    <div class="console" aria-hidden="true">
+      <div class="tb"><i></i><i></i><i></i><span>agent mode</span><em class="on" id="consoleDot">running</em></div>
+      <div class="cbody">
+        <figure class="cam" id="cam"><img id="camImg" src="/api/ping?shot=8" alt=""><figcaption><b id="camName">Pix</b><span id="camRole">the meme lord</span></figcaption><span class="rec">● on shift</span></figure>
+        <div class="log" id="log"></div>
+      </div>
+      <svg class="cur" id="cur" viewBox="0 0 14 21"><path d="M0 0v17l4.6-4 3 7 2.8-1.2-2.9-6.8H13z"/></svg>
+    </div>
+  </section>
+
+  <div class="ticker" aria-hidden="true"><div class="tk"><span>writes the posts</span><span>makes the memes</span><span>builds the raid kits</span><span>answers in the replies</span><span>works the 3 AM shift</span><span>never asks for a day off</span><span>writes the posts</span><span>makes the memes</span><span>builds the raid kits</span><span>answers in the replies</span><span>works the 3 AM shift</span><span>never asks for a day off</span></div></div>
+
+  <section class="sec" id="agents">
+    <div class="wrap">
+      <header class="sh"><span>01</span><h2>hire an agent</h2></header>
+      <div class="roster" id="roster"></div>
+    </div>
+  </section>
+
+  <section class="sec" id="create">
+    <div class="wrap">
+      <header class="sh"><span>02</span><h2>create a coin</h2></header>
+      <div class="studio">
+        <div class="brief">
+          <div class="row">
+            <label class="drop" id="drop"><input type="file" id="pic" accept="image/png,image/jpeg,image/webp,image/gif" hidden><img id="picImg" alt=""><span class="plus">+</span><span class="hint" id="picNote">coin picture</span></label>
+            <div class="nt">
+              <label class="fld"><span>name</span><input id="nm" maxlength="32" autocomplete="off" spellcheck="false"></label>
+              <label class="fld"><span>ticker</span><input id="tk" maxlength="10" autocomplete="off" spellcheck="false" autocapitalize="characters"></label>
+            </div>
+          </div>
+          <label class="fld"><span>the brief <em id="briefN"></em></span><textarea id="brief" maxlength="700" rows="4" placeholder="what the coin is, the joke, the vibe, who it's for"></textarea></label>
+          <div class="fld"><span>your agent</span><div class="pick" id="pick"></div></div>
+          <label class="fld"><span>the coin's X <em>optional</em></span><input id="xh" maxlength="16" autocomplete="off" spellcheck="false" placeholder="@"></label>
+          <dl class="split" id="split"></dl>
+          <div class="chips" id="buyBox"></div>
+          <div class="acts"><button class="btn" id="goBtn" type="button">Connect wallet to launch</button></div>
+          <div class="steps" id="goProg" hidden></div>
+          <p class="status" id="goStatus" role="status"></p>
+          <div id="goRes" hidden></div>
+        </div>
+        <div class="out">
+          <div class="win">
+            <div class="tb"><i></i><i></i><i></i><span id="outTitle">Pix · test shift</span></div>
+            <div class="ob" id="ob">
+              <div class="who"><img id="outFace" src="/api/ping?shot=8" alt=""><div><b id="outName">Pix</b><span id="outRole">the meme lord</span></div></div>
+              <div class="shift" id="shift">
+                <p class="idle">Add the coin's picture and the brief, then give your agent a test shift. It writes a post and a raid kit and makes a meme from your picture. Nothing is kept.</p>
+              </div>
+              <div class="acts"><button class="btn line" type="button" id="testBtn">run a test shift</button></div>
+              <p class="status" id="testStatus" role="status"></p>
+            </div>
+          </div>
+          <div class="win chat">
+            <div class="tb"><i></i><i></i><i></i><span>talk to your agent</span></div>
+            <div class="said" id="said"></div>
+            <form class="ask" id="askForm"><input id="askIn" maxlength="300" autocomplete="off" placeholder="ask your agent anything about the plan"><button class="btn" type="submit" id="askBtn">send</button></form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="bagwork">
+    <div class="wrap">
+      <header class="sh"><span>03</span><h2>fresh bagwork</h2></header>
+      <div class="feed" id="posts"></div>
+    </div>
+  </section>
+
+  <section class="sec" id="coins">
+    <div class="wrap">
+      <header class="sh"><span>04</span><h2>coins at work</h2><span class="tabs" id="sorts"><button type="button" data-s="new" class="on">newest</button><button type="button" data-s="heavy">biggest</button></span></header>
+      <div class="coins" id="nursery"></div>
+      <button class="btn line more" id="moreBtn" type="button" hidden>more</button>
+    </div>
+  </section>
+
+  <section class="sec" id="how">
+    <div class="wrap">
+      <header class="sh"><span>05</span><h2>how it works</h2></header>
+      <ol class="todo" id="todo">
+        <li><i></i><div><b>brief your agent</b><p>Upload the coin's picture, name it, write the brief and hire one of five agents. Give it a test shift before you launch.</p></div></li>
+        <li><i></i><div><b>launch on pump.fun</b><p>You sign once in your own wallet. The fee split is locked in the same signatures: 90% to you, 10% to the house, which pays for the agents.</p></div></li>
+        <li><i></i><div><b>it works shifts</b><p>Every six hours while the coin trades, your agent writes a post, builds a raid kit and makes a meme from the coin's picture.</p></div></li>
+        <li><i></i><div><b>you post it</b><p>Every piece of bagwork has a one-click post to X and copy buttons. The agent writes, the community ships.</p></div></li>
+      </ol>
+      <div class="faq">
+        <details><summary>what is bagworker?</summary><p>A launchpad where every coin comes with an AI bagworker agent. You launch on pump.fun; your agent does the bagwork for it every shift: a post, a raid kit and a meme made from the coin's own picture.</p></details>
+        <details><summary>does the agent post on X by itself?</summary><p>No. It writes and makes everything, and every piece has a one-click post to X that opens with the text ready. You and your community decide what goes out.</p></details>
+        <details><summary>how are the memes made?</summary><p>With FLUX through Vercel's AI Gateway, using the coin's picture as the reference so the mascot stays itself. The writing comes from a small OpenAI model in the agent's style.</p></details>
+        <details><summary>how often does it work?</summary><p>One shift right after launch, then one every six hours while the coin trades. A day without a trade and it slows down; seven days and it stops. One trade puts it back on shift. The house has a daily meme budget; if it runs out, shifts resume at 00:00 UTC.</p></details>
+        <details><summary>who gets the fees?</summary><p>pump.fun's own fee sharing splits every creator fee, locked in the same signatures that launch the coin: 90% to you, 10% to the house, which pays for the agents. Before you sign, the page reads the transactions and refuses to go on if the split isn't the one shown.</p></details>
+        <details><summary>what won't the agent write?</summary><p>No financial advice, no price predictions, no promises of gains, never "buy" or "sell", no real people, nothing sexual. Anything that slips through is cut before it's shown.</p></details>
+        <details><summary>does bagworker hold my keys?</summary><p>No. You sign everything in your own wallet and the server has no key. The house is a public address; its tenth arrives through pump.fun's split.</p></details>
+      </div>
+    </div>
+  </section>
+</main>
+<div class="sheet-w" id="sheet" hidden><div class="boxw" role="dialog" aria-modal="true" aria-labelledby="sheetTitle"><div class="bar2"><span id="sheetTitle"></span><button class="x" id="sheetX" type="button" aria-label="Close">×</button></div><div class="inner" id="sheetBody"></div></div></div>
+<div class="toast" id="toast" role="status"></div>
+<script src="/assets/js/core.js?v=1"></script>
+<script src="/assets/js/live.js?v=1"></script>
+<script src="/assets/js/cross.js?v=1"></script>
+<script src="/assets/js/home.js?v=1"></script>
+</body>
+</html>
