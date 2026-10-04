@@ -15,11 +15,19 @@ const SHOTS = [
   'Photorealistic portrait of a fictional 45-year-old man in a sharp navy suit wearing a slim headset with a microphone, a serious closer stare, in a dark office lit by trading screens at night, candid photo, sharp face, no text',
   'Photorealistic portrait of a fictional 22-year-old woman with pink-dyed hair and gaming headphones, a crypto bagworker in a neon-lit gaming room at night, grinning at her monitor, candid photo, sharp face, no text',
   'Photorealistic portrait of a fictional 30-year-old man in a black tracksuit and thin gold chain with a slim headset, holding two phones, in a dark apartment at night lit by screens, candid photo, sharp face, no text',
+  "Photorealistic phone-camera selfie of a fictional 23-year-old woman TikTok creator with glossy dark hair and gold hoop earrings, filming herself in her bedroom at night, a round ring light reflected in her eyes, pink LED strip lights behind her, playful smile, subject centered, candid, natural skin texture, sharp face, no text",
+  "Photorealistic photo of a fictional 25-year-old man TikTok creator in a black puffer jacket filming a street food review at a neon night market, holding skewers toward the camera, excited face, steam and blurred neon behind him, subject centered, candid, sharp face, no text, no letters",
+  "Photorealistic photo of a fictional 22-year-old woman with a platinum bob doing a get-ready-with-me at a vanity mirror with round bulbs, holding a lip gloss toward the camera, ring light glow on her face, subject centered, candid, natural skin texture, no text",
+  "Photorealistic photo of a fictional 27-year-old man fitness creator in a black sleeveless top filming himself in a gym mirror with his phone after a workout, sweaty and grinning, moody gym lighting, subject centered, sharp face, no text",
+  "Photorealistic full-body photo of a fictional 24-year-old woman dancer in an oversized white t-shirt and cargo pants mid-dance on a rooftop at golden hour, city skyline behind her, hair moving, joyful, subject centered, no text",
+  "Photorealistic full-body photo of a fictional 29-year-old man in a beige trench coat walking toward the camera through a bright airport terminal with a carry-on suitcase, confident airport-outfit vibe, subject centered, candid, no text, no signs",
+  "Photorealistic photo of a fictional 21-year-old woman streamer with headphones and winged eyeliner making a shocked reaction face with her hand over her mouth, purple and blue RGB lights behind her, subject centered, sharp face, no text",
+  "Photorealistic photo of a fictional 30-year-old man in a crisp navy suit filming a day-in-my-life vlog on a city sidewalk at sunrise, coffee in hand, talking to the camera, subject centered, candid, sharp face, no text, no signs",
 ];
 module.exports = async (req, res) => {
   L.setOidc(req);
   const sq = L.query(req).shot;
-  if (sq != null && /^[0-9]$/.test(String(sq)) && L.dbReady()) {
+  if (sq != null && /^(1[0-7]|[0-9])$/.test(String(sq)) && L.dbReady()) {
     try {
       await L.ready(); const n = Number(sq);
       let r = (await L.q('SELECT img FROM w0_brand WHERE n=$1', [n]))[0];
