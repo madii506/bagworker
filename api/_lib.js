@@ -1,4 +1,4 @@
-// bagworker shared server code. Every upstream call has a timeout and an honest failure message.
+// bagworker's shared server code. Every upstream call has a timeout and an honest failure message.
 // Upstreams: Solana RPC, Jupiter's price API and coins' own metadata. Nothing here holds a key: there is no wallet on this server.
 const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0 Safari/537.36';
 const SOL = 'So11111111111111111111111111111111111111112';
@@ -141,17 +141,16 @@ const dbReady = () => !!(process.env.NI_PGLITE || process.env.DATABASE_URL || pr
 function ready() {
   if (!made) made = (async () => {
     for (const st of [
-      `CREATE TABLE IF NOT EXISTS w0_clones (mint text PRIMARY KEY, id text UNIQUE NOT NULL, slot int, name text NOT NULL, symbol text NOT NULL, niche text NOT NULL, voice text NOT NULL,
+      `CREATE TABLE IF NOT EXISTS w0_coins (mint text PRIMARY KEY, id text UNIQUE NOT NULL, slot int, name text NOT NULL, symbol text NOT NULL, niche text NOT NULL, voice text NOT NULL,
         look text, xhandle text, vstyle text, payer text NOT NULL, shares jsonb NOT NULL, status text NOT NULL DEFAULT 'pending', created_at timestamptz NOT NULL DEFAULT now(), born_at timestamptz,
         state text NOT NULL DEFAULT 'awake', mcap_sol float8, complete boolean NOT NULL DEFAULT false, last_trade_at timestamptz, vault_lamports bigint NOT NULL DEFAULT 0,
         img bytea, posts int NOT NULL DEFAULT 0, posted_at timestamptz)`,
-      `CREATE UNIQUE INDEX IF NOT EXISTS w0_slot ON w0_clones(slot)`,
+      `CREATE UNIQUE INDEX IF NOT EXISTS w0_slot ON w0_coins(slot)`,
       `CREATE TABLE IF NOT EXISTS w0_posts (id bigserial PRIMARY KEY, mint text NOT NULL, caption text NOT NULL, scene text, img bytea NOT NULL, at timestamptz NOT NULL DEFAULT now())`,
       `CREATE INDEX IF NOT EXISTS w0_posts_mint ON w0_posts(mint, id DESC)`,
       `CREATE TABLE IF NOT EXISTS w0_log (id bigserial PRIMARY KEY, kind text NOT NULL, mint text, text text NOT NULL, at timestamptz NOT NULL DEFAULT now())`,
       `CREATE TABLE IF NOT EXISTS w0_brand (n int PRIMARY KEY, img bytea NOT NULL, at timestamptz NOT NULL DEFAULT now())`,
       `CREATE TABLE IF NOT EXISTS w0_state (id int PRIMARY KEY, cycle int NOT NULL DEFAULT 0, next_at timestamptz NOT NULL DEFAULT now(), lock_at timestamptz, shots_day date, shots int NOT NULL DEFAULT 0)`,
-      `ALTER TABLE w0_state ADD COLUMN IF NOT EXISTS likes bigint NOT NULL DEFAULT 0`,
     ]) await q(st);
     await q(`INSERT INTO w0_state (id) VALUES (1) ON CONFLICT (id) DO NOTHING`);
   })().catch(e => { made = null; throw e; });
