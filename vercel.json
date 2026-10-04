@@ -1,0 +1,6 @@
+{
+  "cleanUrls": true,
+  "functions": {
+    "api/ping.js": { "maxDuration": 60 }
+  }
+}
